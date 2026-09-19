@@ -198,12 +198,19 @@ export function gameReducer(state, action) {
       return {
         ...state,
         players: { ...state.players, [activeKey]: updatedPlayer },
-        //currentChoices: drawChoices(state.act, newStress),
       }
     }
 
     case 'RESET':
-      return createInitialState()
+      const fresh = createInitialState()
+      const zeroedPlayers = Object.fromEntries(
+        Object.entries(fresh.players).map(([key, p]) => [key, { ...p, stress: 0 }])
+      )
+      return {
+        ...fresh,
+        players: zeroedPlayers,
+        currentCHoices: drawChoices(1, 0),
+      }
 
     default:
       return state
