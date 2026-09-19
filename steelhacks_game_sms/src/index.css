@@ -26,6 +26,18 @@ body {
   padding: 20px clamp(16px, 4vw, 48px) 28px;
 }
 
+/* Initial title screen only */
+.title-screen-shell {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: none;
+  padding: 20px;
+  background:
+    linear-gradient(rgb(0 0 0 / 45%), rgb(0 0 0 / 55%)),
+    url('./assets/guilhermemarinho-forest-8746907.png') center / cover;
+}
+
 .game-layout {
   display: grid;
   grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);

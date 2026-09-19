@@ -26,7 +26,7 @@ export default function App() {
 
   if (state.phase === 'intro') {
     return (
-      <div className="app-shell">
+      <div className="app-shell title-screen-shell">
         <StoryScreen act={1} onBegin={() => dispatch({ type: 'BEGIN' })} />
       </div>
     )
