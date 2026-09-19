@@ -1,122 +1,95 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useEffect, useReducer } from 'react'
+import { gameReducer, createInitialState } from './gameReducer.js'
+import { usePresageSocket } from './hooks/usePresageSocket.js'
+import StatBars from './components/StatBars.jsx'
+import TurnTimer from './components/TurnTimer.jsx'
+import ChoiceCards from './components/ChoiceCards.jsx'
+import EventScreen from './components/EventScreen.jsx'
+import StoryScreen from './components/StoryScreen.jsx'
+import EndingScreen from './components/EndingScreen.jsx'
+import './index.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [state, dispatch] = useReducer(gameReducer, undefined, createInitialState)
+  const { connected: presageConnected, stress: liveStress } = usePresageSocket()
+
+  // Feed live (or simulated) stress into the active player continuously
+  // while it's their turn to decide, so the choice pool + timer both react.
+  useEffect(() => {
+    if (state.phase !== 'playing') return
+    dispatch({ type: 'EXTERNAL_STRESS_UPDATE', stress: liveStress })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [liveStress, state.phase])
+
+  const activePlayer = state.players[state.activePlayer]
+
+  if (state.phase === 'intro') {
+    return (
+      <div className="app-shell">
+        <StoryScreen act={1} onBegin={() => dispatch({ type: 'BEGIN' })} />
+      </div>
+    )
+  }
+
+  if (state.phase === 'ending') {
+    return (
+      <div className="app-shell">
+        <EndingScreen
+          players={state.players}
+          forestHealth={state.forestHealth}
+          log={state.log}
+          onRestart={() => dispatch({ type: 'RESET' })}
+        />
+      </div>
+    )
+  }
+
+  if (state.phase === 'event' && state.lastEvent) {
+    return (
+      <div className="app-shell">
+        <EventScreen
+          event={state.lastEvent}
+          onAcknowledge={() => dispatch({ type: 'ACKNOWLEDGE_EVENT' })}
+        />
+      </div>
+    )
+  }
+
+  // first turn of a new act gets a story beat (shown once per act)
+  const showActIntro = (state.turnNumber - 1) % 6 === 0
+  if (showActIntro && state.log.length === (state.act - 1) * 6) {
+    return (
+      <div className="app-shell">
+        <StoryScreen act={state.act} onBegin={() => dispatch({ type: 'BEGIN' })} />
+      </div>
+    )
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app-shell">
+      <header className="game-header">
+        <h1>Canopy Co.</h1>
+        <p className="turn-indicator">
+          Turn {state.turnNumber} — Act {state.act} — {activePlayer.name}'s move
+        </p>
+      </header>
 
-      <div className="ticks"></div>
+      <StatBars
+        player={activePlayer}
+        forestHealth={state.forestHealth}
+        presageConnected={presageConnected}
+      />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <TurnTimer
+        timeLimitMs={state.timeLimitMs}
+        turnKey={state.turnNumber}
+        onTimeout={() => dispatch({ type: 'TIMEOUT' })}
+      />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <ChoiceCards
+        choices={state.currentChoices}
+        onChoose={(choiceId) => dispatch({ type: 'CHOOSE', choiceId })}
+      />
+    </div>
   )
 }
-
-export default App
