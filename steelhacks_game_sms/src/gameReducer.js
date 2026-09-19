@@ -1,7 +1,5 @@
 import { choicesForAct } from './data/choices.js'
 import { eventsForAct } from './data/events.js'
-import { choicesForAct } from './data/choices.js'
-import { eventsForAct } from './data/events.js'
 
 
 // --- tunable constants: adjust these first if playtesting feels off ---
