@@ -1,5 +1,8 @@
 import { choicesForAct } from './data/choices.js'
 import { eventsForAct } from './data/events.js'
+import { choicesForAct } from './data/choices.js'
+import { eventsForAct } from './data/events.js'
+
 
 // --- tunable constants: adjust these first if playtesting feels off ---
 export const TURNS_PER_ACT = 6
@@ -209,7 +212,7 @@ export function gameReducer(state, action) {
       return {
         ...fresh,
         players: zeroedPlayers,
-        currentCHoices: drawChoices(1, 0),
+        currentChoices: drawChoices(1, 0),
       }
 
     default:
