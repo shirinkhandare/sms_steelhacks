@@ -1,6 +1,6 @@
 export default function Grid({
   columns,
-  tiles,
+  tiles = [],
   activeTileIndex = null,
   onTileClick = null,
 }) {

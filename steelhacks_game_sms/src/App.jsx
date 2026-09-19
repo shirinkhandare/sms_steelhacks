@@ -90,9 +90,21 @@ export default function App() {
           />
         </aside>
 
-        <Grid />
+        <Grid
+  columns={12}
+  tiles={Array.from({ length: 120 }, (_, index) => ({
+    index,
+    type: 'forest',
+    size: 'medium',
+    colSpan: 1,
+    rowSpan: 1,
+    degraded: false,
+    owner: null,
+    isRiver: false,
+    pollution: 0,
+  }))}
+/>
       </div>
-
       <ChoiceCards
         choices={state.currentChoices}
         onChoose={(choiceId) => dispatch({ type: 'CHOOSE', choiceId })}
