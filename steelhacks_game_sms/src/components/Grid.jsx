@@ -1,4 +1,4 @@
-export default function Grid({ columns = 12, rows = 8 }) {
+export default function Grid({ columns = 12, rows = 10 }) {
   const cells = Array.from({ length: columns * rows }, (_, index) => index)
 
   return (
