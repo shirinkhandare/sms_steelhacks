@@ -20,9 +20,22 @@ body {
 }
 
 .app-shell {
-  max-width: 720px;
+  width: min(1200px, 100%);
+  min-height: 100dvh;
   margin: 0 auto;
-  padding: 24px 16px 64px;
+  padding: 20px clamp(16px, 4vw, 48px) 28px;
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 40px);
+  align-items: start;
+  min-height: min(58vh, 580px);
+}
+
+.game-hud {
+  min-width: 0;
 }
 
 .game-header h1 {
@@ -40,6 +53,31 @@ body {
   flex-direction: column;
   gap: 10px;
   margin: 20px 0;
+}
+
+/* --- central forest map --- */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  align-self: stretch;
+  width: 100%;
+  min-height: clamp(280px, 52vh, 580px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #122318;
+  box-shadow: inset 0 0 48px rgb(0 0 0 / 0.18);
+}
+
+.game-grid-cell {
+  aspect-ratio: 1;
+  border-right: 1px solid rgb(76 163 94 / 0.16);
+  border-bottom: 1px solid rgb(76 163 94 / 0.16);
+  background: linear-gradient(135deg, rgb(76 163 94 / 0.12), transparent 65%);
+}
+
+.game-grid-cell:nth-child(4n + 2) {
+  background-color: rgb(90 133 66 / 0.14);
 }
 .stat-bar-label {
   display: flex;
@@ -84,10 +122,12 @@ body {
 /* --- choice cards --- */
 .choice-cards {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 12px;
+  margin-top: 20px;
 }
 .choice-card {
+  flex: 1 1 0;
   text-align: left;
   background: var(--panel);
   border: 1px solid var(--border);
@@ -156,4 +196,23 @@ body {
   border-top: 1px solid var(--border);
   padding-top: 16px;
   margin-top: 24px;
+}
+
+@media (max-width: 700px) {
+  .app-shell {
+    padding: 16px;
+  }
+
+  .game-layout {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .game-grid {
+    min-height: 34vh;
+  }
+
+  .choice-cards {
+    flex-direction: column;
+  }
 }

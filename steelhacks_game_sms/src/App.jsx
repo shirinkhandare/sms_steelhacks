@@ -7,6 +7,7 @@ import ChoiceCards from './components/ChoiceCards.jsx'
 import EventScreen from './components/EventScreen.jsx'
 import StoryScreen from './components/StoryScreen.jsx'
 import EndingScreen from './components/EndingScreen.jsx'
+import Grid from './components/Grid.jsx'
 import './index.css'
 
 export default function App() {
@@ -65,24 +66,30 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <header className="game-header">
-        <h1>Canopy Co.</h1>
-        <p className="turn-indicator">
-          Turn {state.turnNumber} — Act {state.act} — {activePlayer.name}'s move
-        </p>
-      </header>
+      <div className="game-layout">
+        <aside className="game-hud">
+          <header className="game-header">
+            <h1>Canopy Co.</h1>
+            <p className="turn-indicator">
+              Turn {state.turnNumber} — Act {state.act} — {activePlayer.name}'s move
+            </p>
+          </header>
 
-      <StatBars
-        player={activePlayer}
-        forestHealth={state.forestHealth}
-        presageConnected={presageConnected}
-      />
+          <StatBars
+            player={activePlayer}
+            forestHealth={state.forestHealth}
+            presageConnected={presageConnected}
+          />
 
-      <TurnTimer
-        timeLimitMs={state.timeLimitMs}
-        turnKey={state.turnNumber}
-        onTimeout={() => dispatch({ type: 'TIMEOUT' })}
-      />
+          <TurnTimer
+            timeLimitMs={state.timeLimitMs}
+            turnKey={state.turnNumber}
+            onTimeout={() => dispatch({ type: 'TIMEOUT' })}
+          />
+        </aside>
+
+        <Grid />
+      </div>
 
       <ChoiceCards
         choices={state.currentChoices}
