@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 
 // Expects a local bridge (Python/Node) that reads webcam vitals via the
 // SmartSpectra SDK and pushes JSON like: { "stress": 42 } (0-100)
-// over a WebSocket at this URL. See /bridge-example/README.md.
-const BRIDGE_URL = 'ws://localhost:8765'
+// over a WebSocket at this URL. See /bridge.mjs.
+const BRIDGE_URL =
+  import.meta.env.VITE_PRESAGE_BRIDGE_URL || 'ws://localhost:8765'
+const RECONNECT_DELAY_MS = 2_000
 
 // If no bridge is connected, stress climbs slowly on its own so the
 // "choices get worse over time" mechanic still functions during dev/demo
@@ -27,15 +29,29 @@ export function usePresageSocket() {
 
   useEffect(() => {
     let cancelled = false
-    try {
-      const ws = new WebSocket(BRIDGE_URL)
+    let reconnectTimer
+
+    const connect = () => {
+      if (cancelled) return
+
+      let ws
+      try {
+        ws = new WebSocket(BRIDGE_URL)
+      } catch {
+        setConnected(false)
+        reconnectTimer = setTimeout(connect, RECONNECT_DELAY_MS)
+        return
+      }
       wsRef.current = ws
 
       ws.onopen = () => {
         if (!cancelled) setConnected(true)
       }
       ws.onclose = () => {
-        if (!cancelled) setConnected(false)
+        if (!cancelled) {
+          setConnected(false)
+          reconnectTimer = setTimeout(connect, RECONNECT_DELAY_MS)
+        }
       }
       ws.onerror = () => {
         if (!cancelled) setConnected(false)
@@ -44,18 +60,19 @@ export function usePresageSocket() {
         try {
           const data = JSON.parse(event.data)
           if (typeof data.stress === 'number' && !cancelled) {
-            setLiveStress(data.stress)
+            setLiveStress(Math.max(0, Math.min(100, data.stress)))
           }
         } catch {
           // ignore malformed frames
         }
       }
-    } catch {
-      setConnected(false)
     }
+
+    connect()
 
     return () => {
       cancelled = true
+      clearTimeout(reconnectTimer)
       wsRef.current?.close()
     }
   }, [])
