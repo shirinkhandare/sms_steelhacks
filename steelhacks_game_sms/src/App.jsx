@@ -71,7 +71,9 @@ export default function App() {
           <header className="game-header">
             <h1>Canopy Co.</h1>
             <p className="turn-indicator">
-              Turn {state.turnNumber} — Act {state.act} — {activePlayer.name}'s move
+              Turn {state.turnNumber}
+              <br></br>
+              {activePlayer.name}'s move
             </p>
           </header>
 
