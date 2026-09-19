@@ -35,9 +35,20 @@ function toGameStress(pulseRate, breathingRate) {
   const pulseContribution = pulseRate == null ? 0 : (pulseRate - 70) * 1.2;
   const breathingContribution = breathingRate == null ? 0 : (breathingRate - 14) * 2;
   return Math.round(Math.max(0, Math.min(100, 35 + pulseContribution + breathingContribution)));
-}
 
+}
 sdk.on('metrics', (buf, timestampUs) => {
+  const metrics = decodeMetrics(buf);
+  if (Buffer.isBuffer(metrics)) return;
+
+  const breathingRate = metrics.breathing?.rate?.at(-1)?.value;
+  const chestTrace = metrics.breathing?.upperTrace?.at(-1)?.value;
+  const abdomenTrace = metrics.breathing?.lowerTrace?.at(-1)?.value;
+  const pulseRate = metrics.cardio?.pulseRate?.at(-1)?.value;
+  console.log('breathing:', breathingRate, ' pulse:', pulseRate);
+});
+
+/*sdk.on('metrics', (buf, timestampUs) => {
   const metrics = decodeMetrics(buf);
   if (Buffer.isBuffer(metrics)) return; // undecodable frame, skip
 
@@ -55,6 +66,8 @@ sdk.on('metrics', (buf, timestampUs) => {
     timestampUs,
   });
 });
+*/
+
 
 sdk.on('validationStatus', (code, timestampUs, hint) => {
   if (code !== 0) console.warn('SmartSpectra input needs attention:', hint || `validation code ${code}`);
