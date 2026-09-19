@@ -8,10 +8,11 @@
   --stress: #d94a4a;
   --forest: #4ca35e;
   --border: #2a352c;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: 'MyFont', sans-serif;
 }
-
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -45,11 +46,9 @@ body {
   align-items: start;
   min-height: min(58vh, 580px);
 }
-
 .game-hud {
   min-width: 0;
 }
-
 .game-header h1 {
   margin-bottom: 4px;
   letter-spacing: 0.5px;
@@ -58,7 +57,6 @@ body {
   color: var(--muted);
   margin-top: 0;
 }
-
 /* --- stat bars --- */
 .stat-bars {
   display: flex;
@@ -66,7 +64,6 @@ body {
   gap: 10px;
   margin: 20px 0;
 }
-
 /* --- central forest map --- */
 .game-grid {
   display: grid;
@@ -80,14 +77,12 @@ body {
   background: #122318;
   box-shadow: inset 0 0 48px rgb(0 0 0 / 0.18);
 }
-
 .game-grid-cell {
   aspect-ratio: 1;
   border-right: 1px solid rgb(76 163 94 / 0.16);
   border-bottom: 1px solid rgb(76 163 94 / 0.16);
   background: linear-gradient(135deg, rgb(76 163 94 / 0.12), transparent 65%);
 }
-
 .game-grid-cell:nth-child(4n + 2) {
   background-color: rgb(90 133 66 / 0.14);
 }
@@ -113,7 +108,6 @@ body {
 .fill-trust { background: var(--trust); }
 .fill-stress { background: var(--stress); }
 .fill-forest { background: var(--forest); }
-
 /* --- timer --- */
 .turn-timer {
   height: 6px;
@@ -130,7 +124,6 @@ body {
 .turn-timer-fill.urgent {
   background: var(--stress);
 }
-
 /* --- choice cards --- */
 .choice-cards {
   display: flex;
@@ -148,6 +141,7 @@ body {
   color: var(--text);
   cursor: pointer;
   transition: border-color 0.2s ease, transform 0.1s ease;
+  font-family: 'MyFont', sans-serif;
 }
 .choice-card:hover {
   border-color: var(--text);
@@ -162,9 +156,12 @@ body {
   gap: 12px;
   font-size: 0.8rem;
 }
-.choice-effects .pos { color: var(--forest); }
-.choice-effects .neg { color: var(--stress); }
-
+.choice-effects .pos {
+  color: var(--forest);
+}
+.choice-effects .neg {
+  color: var(--stress);
+}
 /* --- story / event / ending screens --- */
 .story-screen, .event-screen, .ending-screen {
   padding: 60px 12px;
@@ -172,7 +169,7 @@ body {
 }
 .story-screen h1, .ending-screen h1 {
   margin-bottom: 16px;
-  }
+}
 .story-screen p, .event-screen p {
   color: var(--muted);
   line-height: 1.5;
@@ -186,10 +183,14 @@ body {
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
+  font-family: 'MyFont', sans-serif;
 }
-
-.ending-screen.reveal { text-align: left; }
-.ending-screen .winner-line { font-size: 1.2rem; }
+.ending-screen.reveal {
+  text-align: left;
+}
+.ending-screen .winner-line {
+  font-size: 1.2rem;
+}
 .ending-screen .forest-remaining {
   font-size: 1.4rem;
   color: var(--stress);
@@ -205,7 +206,6 @@ body {
   padding-top: 16px;
   margin-top: 24px;
 }
-
 @media (max-width: 700px) {
   .app-shell {
     padding: 16px;
@@ -223,4 +223,8 @@ body {
   .choice-cards {
     flex-direction: column;
   }
+}
+@font-face {
+  font-family: 'MyFont';
+  src: url('./assets/yoster.ttf') format('truetype');
 }
