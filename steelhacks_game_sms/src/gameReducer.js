@@ -198,7 +198,7 @@ export function gameReducer(state, action) {
       return {
         ...state,
         players: { ...state.players, [activeKey]: updatedPlayer },
-        currentChoices: drawChoices(state.act, newStress),
+        //currentChoices: drawChoices(state.act, newStress),
       }
     }
 
