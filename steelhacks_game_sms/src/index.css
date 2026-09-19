@@ -15,7 +15,7 @@
 }
 body {
   margin: 0;
-  background: var(--bg);
+  /*background: var(--bg);*/
   color: var(--text);
 }
 .app-shell {
@@ -23,6 +23,10 @@ body {
   min-height: 100dvh;
   margin: 0 auto;
   padding: 20px clamp(16px, 4vw, 48px) 28px;
+
+  background:
+    linear-gradient(rgb(0 0 0 / 45%), rgb(0 0 0 / 55%)),
+    url('./assets/guilhermemarinho-forest-8746907.png') center center / cover no-repeat;
 }
 
 /* Initial title screen only */
@@ -32,9 +36,9 @@ body {
   width: 100%;
   max-width: none;
   padding: 20px;
-  background:
+  /*background:
     linear-gradient(rgb(0 0 0 / 45%), rgb(0 0 0 / 55%)),
-    url('./assets/guilhermemarinho-forest-8746907.png') center / cover;
+    url('./assets/guilhermemarinho-forest-8746907.png') center / cover;*/
 }
 .game-layout {
   display: grid;
