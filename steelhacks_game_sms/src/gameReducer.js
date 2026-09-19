@@ -1,10 +1,5 @@
 import { choicesForAct } from './data/choices.js'
 import { eventsForAct } from './data/events.js'
-<<<<<<< HEAD
-
-=======
->>>>>>> 143af5aaf40aaa95d043217783703c595a97e753
-
 
 // --- tunable constants: adjust these first if playtesting feels off ---
 export const TURNS_PER_ACT = 6
