@@ -10,17 +10,17 @@ import EndingScreen from './components/EndingScreen.jsx'
 import './index.css'
 
 export default function App() {
+  // ---- all hooks first ----
   const [state, dispatch] = useReducer(gameReducer, undefined, createInitialState)
   const { connected: presageConnected, stress: liveStress } = usePresageSocket()
 
-  // Feed live (or simulated) stress into the active player continuously
-  // while it's their turn to decide, so the choice pool + timer both react.
   useEffect(() => {
     if (state.phase !== 'playing') return
     dispatch({ type: 'EXTERNAL_STRESS_UPDATE', stress: liveStress })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveStress, state.phase])
 
+  // ---- then the screens ----
   const activePlayer = state.players[state.activePlayer]
 
   if (state.phase === 'intro') {
@@ -55,9 +55,7 @@ export default function App() {
     )
   }
 
-  // first turn of a new act gets a story beat (shown once per act)
-  const showActIntro = (state.turnNumber - 1) % 6 === 0
-  if (showActIntro && state.log.length === (state.act - 1) * 6) {
+  if (state.actIntroSeen < state.act) {
     return (
       <div className="app-shell">
         <StoryScreen act={state.act} onBegin={() => dispatch({ type: 'BEGIN' })} />

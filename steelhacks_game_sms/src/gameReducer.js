@@ -17,6 +17,7 @@ export const initialPlayer = (name) => ({
 export function createInitialState() {
   return {
     phase: 'intro', // 'intro' | 'playing' | 'event' | 'ending'
+    actIntroSeen: 0,
     turnNumber: 1,
     act: 1,
     activePlayer: 'A',
@@ -93,7 +94,7 @@ function nextActivePlayer(p) {
 export function gameReducer(state, action) {
   switch (action.type) {
     case 'BEGIN':
-      return { ...state, phase: 'playing' }
+      return { ...state, phase: 'playing', actIntroSeen: state.act }
 
     case 'ACKNOWLEDGE_EVENT': {
       // move on to the actual turn after showing a random event
