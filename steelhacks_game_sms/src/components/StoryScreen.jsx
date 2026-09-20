@@ -6,7 +6,7 @@ const ACT_COPY = {
     body: 'Two companies enter the Amazon with the same promise: sustainable development, done right. Shareholders are patient. For now.',
   },
   2: {
-    title: 'Act II — The Quarter',
+    title: 'Directions',
     body: 'The first earnings call is coming. The easy, gentle choices are starting to look expensive.',
   },
   3: {
