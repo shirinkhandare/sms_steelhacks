@@ -21,7 +21,7 @@ export function timeLimitForTurn(act, stress) {
 export const initialPlayer = (name, isBot = false) => ({
   name,
   isBot,
-  profit: 0,
+  profit: 10,
   trust: 50,
   stress: 20,
 })
