@@ -1,5 +1,5 @@
 # Team SMS SteelHacks Project
-<p>**Description:**</p>
+<p><b>Description:</b></p>
 <p>Amazon Under Pressure is a single-player strategy game about running a company that enters the Amazon rainforest promising sustainable development, and watching that promise erode as your own real stress level starts making decisions for you.</p>
 
 <p>**How to Play:**</p>
