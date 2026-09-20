@@ -1,5 +1,5 @@
 """
-Minimal WebSocket bridge stub for Canopy Co.
+Minimal WebSocket bridge stub for Amazon Under Pressure.
 
 This is the piece that turns real Presage/SmartSpectra vitals into the
 JSON messages the React app listens for: {"stress": <0-100 float>}

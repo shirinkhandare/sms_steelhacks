@@ -116,7 +116,7 @@ export default function App() {
       <div className="game-layout">
         <aside className="game-hud">
           <header className="game-header">
-            <h1>Canopy Co.</h1>
+            <h1>Amazon Under Pressure</h1>
             <p className="turn-indicator">
               Turn {state.turnNumber}
               <br></br>
