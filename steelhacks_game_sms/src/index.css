@@ -2,9 +2,9 @@
   --bg: #0e1410;
   --panel: #151c17;
   --text: #e8ece8;
-  --profit: #d4af37;
-  --trust: #4a90d9;
-  --stress: #d94a4a;
+  --profit: #f29b1d;
+  --trust: #75b3d9;
+  --stress: #c43535;
   --forest: #4ca35e;
   --border: #2a352c;
 
@@ -314,7 +314,7 @@ div.gui-box p {
 }
 div.gui-box button {
   margin-top: 24px;
-  background: #188b2f;
+  background: #598555;
   color: #0e1410;
   border: none;
   padding: 10px 22px;
@@ -457,7 +457,7 @@ div.gui-box p {
 }
 div.gui-box button {
   margin-top: 24px;
-  background: #188b2f;
+  background: #598555;
   color: #0e1410;
   border: none;
   padding: 10px 22px;
