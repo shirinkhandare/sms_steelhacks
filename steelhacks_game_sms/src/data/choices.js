@@ -11,35 +11,35 @@ export const CHOICE_POOL = [
     id: 'a1_survey',
     text: 'Ask the locals first.',
     act: 1, tier: 'calm',
-    effects: { profit: 2, forest: 0, trust: 3, stress: -5 },
+    effects: { profit: -2, forest: 0, trust: 3, stress: -5 },
   },
 
   {
     id: 'a1_partner',
     text: 'Share control with the community.',
     act: 1, tier: 'calm',
-    effects: { profit: 3, forest: 1, trust: 5, stress: -3 },
+    effects: { profit: -5, forest: 1, trust: 5, stress: -3 },
   },
 
   {
     id: 'a1_ecotour',
     text: 'Build an eco-tourism trail.',
     act: 1, tier: 'mid',
-    effects: { profit: 5, forest: -2, trust: 2, stress: 2 },
+    effects: { profit: -10, forest: -2, trust: 2, stress: 2 },
   },
 
   {
     id: 'a1_selective',
     text: 'Harvest a few mature trees.',
     act: 1, tier: 'mid',
-    effects: { profit: 8, forest: -5, trust: 0, stress: 4 },
+    effects: { profit: -8, forest: -5, trust: 0, stress: 4 },
   },
 
   {
     id: 'a1_landgrab',
     text: 'Claim the unmapped land.',
     act: 1, tier: 'high',
-    effects: { profit: 12, forest: -8, trust: -4, stress: 8 },
+    effects: { profit: -12, forest: -8, trust: -4, stress: 8 },
   },
 
 
@@ -47,9 +47,9 @@ export const CHOICE_POOL = [
 
   {
     id: 'a2_offset',
-    text: 'Buy offsets. Skip the expansion.',
+    text: 'Donate to a rainforest NGO to offset the damage.',
     act: 2, tier: 'calm',
-    effects: { profit: -2, forest: 2, trust: 4, stress: -4 },
+    effects: { profit: -6, forest: 5, trust: 4, stress: -4 },
   },
 
   {
@@ -63,7 +63,7 @@ export const CHOICE_POOL = [
     id: 'a2_expand',
     text: 'Expand the harvest zone.',
     act: 2, tier: 'mid',
-    effects: { profit: 10, forest: -10, trust: -2, stress: 5 },
+    effects: { profit: -10, forest: -10, trust: -2, stress: 5 },
   },
 
   {
@@ -77,14 +77,14 @@ export const CHOICE_POOL = [
     id: 'a2_lobby',
     text: 'Fight the protected-area plan.',
     act: 2, tier: 'high',
-    effects: { profit: 15, forest: -6, trust: -8, stress: 10 },
+    effects: { profit: -15, forest: -6, trust: -8, stress: 10 },
   },
 
   {
     id: 'a2_bribe',
     text: 'Make the inspector look away.',
     act: 2, tier: 'high',
-    effects: { profit: 18, forest: -12, trust: -10, stress: 12 },
+    effects: { profit: 15, forest: -12, trust: -10, stress: 12 },
   },
 
 
