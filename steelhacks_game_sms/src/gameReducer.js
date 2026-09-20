@@ -6,7 +6,7 @@ export const TURNS_PER_ACT = 6
 export const MAX_TURNS = TURNS_PER_ACT * 3
 export const BASE_TIME_MS = { 1: 14000, 2: 10000, 3: 7000 } // by act
 export const MIN_TURN_TIME_MS = 4000
-export const STRESS_TIME_PENALTY_MS = 40 // removed per stress point (0-100)
+export const STRESS_TIME_PENALTY_MS = 80 // removed per stress point (0-100)
 export const RANDOM_EVENT_CHANCE = 0.3 // chance an event fires before a turn (act 2+)
 
 // SmartSpectra's pulse and breathing readings become the player's live stress

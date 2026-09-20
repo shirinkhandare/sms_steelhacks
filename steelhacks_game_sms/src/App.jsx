@@ -136,6 +136,7 @@ export default function App() {
 
         <Grid
           columns={12}
+          forestHealth={state.forestHealth}
           tiles={Array.from({ length: 120 }, (_, index) => ({
             index,
             type: 'forest',
