@@ -3,85 +3,247 @@
   --panel: #151c17;
   --text: #e8ece8;
   --muted: #8a978c;
+
   --profit: #d4af37;
   --trust: #4a90d9;
   --stress: #d94a4a;
   --forest: #4ca35e;
+
   --border: #2a352c;
+
   font-family: 'MyFont', sans-serif;
 }
+
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
 }
+
 .app-shell {
   width: min(1200px, 100%);
   min-height: 100dvh;
   margin: 0 auto;
   padding: 20px clamp(16px, 4vw, 48px) 28px;
 }
-.title-screen-shell, .story-screen, .ending-screen {
+
+
+/* =========================================================
+   BACKGROUNDS
+   ========================================================= */
+
+.title-screen-shell,
+.story-screen,
+.event-screen,
+.ending-screen {
   position: relative;
   isolation: isolate;
   background: none;
 }
-.title-screen-shell::before, .story-screen::before, .event-screen::before, .ending-screen::before {
+
+.title-screen-shell::before,
+.story-screen::before,
+.event-screen::before,
+.ending-screen::before {
   content: "";
+
   position: fixed;
   inset: 0;
+
   z-index: -1;
+
   background:
-    linear-gradient(rgb(0 0 0 / 45%), rgb(0 0 0 / 55%)),
-    url('./assets/guilhermemarinho-forest-8746907.png') center / cover no-repeat;
+    linear-gradient(
+      rgb(0 0 0 / 45%),
+      rgb(0 0 0 / 55%)
+    ),
+    url('./assets/guilhermemarinho-forest-8746907.png')
+      center / cover no-repeat;
 }
+
+
+/* =========================================================
+   MAIN GAME LAYOUT
+   ========================================================= */
+
 .game-layout {
   display: grid;
-  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+
+  grid-template-columns:
+    minmax(220px, 560px)
+    minmax(0, 1fr);
+
   gap: clamp(18px, 3vw, 40px);
+
   align-items: start;
+
   min-height: min(58vh, 580px);
 }
+
 .game-hud {
   min-width: 0;
 }
+
 .game-header h1 {
   margin-bottom: 4px;
   letter-spacing: 0.5px;
 }
+
 .turn-indicator {
   color: var(--text);
   margin-top: 0;
 }
-/* --- stat bars --- */
+
+
+/* =========================================================
+   STAT BARS
+   ========================================================= */
+
 .stat-bars {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin: 20px 0;
+
+  gap: 4px;
+
+  margin: 10px 0;
 }
-/* --- central forest map --- */
+
+.stat-bar {
+  width: 100%;
+}
+
+.stat-bar-label {
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 0.85rem;
+
+  color: var(--muted);
+
+  margin-bottom: 4px;
+}
+
+
+/* =========================================================
+   PIXEL ART STATUS BAR — measured directly from the real PNG
+   (128x32 native). Visible art content is a 72x11 region
+   starting at (2,9) in the original file; everything else is
+   transparent padding. Scaled up 7x for a crisp pixelated look.
+   ========================================================= */
+
+/* =========================================================
+   PIXEL ART STATUS BAR — measured from the real PNG (128x32
+   native, 72x11 visible content starting at (2,9)), scaled 5.5x.
+   ========================================================= */
+
+.pixel-bar {
+  position: relative;
+  width: 396px;
+  height: 60px;
+  overflow: hidden;
+}
+
+.pixel-bar-image {
+  position: absolute;
+  left: -11px;
+  top: -50px;
+  width: 704px;
+  height: 176px;
+  z-index: 2;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  display: block;
+}
+
+.pixel-bar-track {
+  position: absolute;
+  left: 33px;
+  top: 33px;
+  width: 352px;
+  height: 11px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.pixel-bar-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  image-rendering: pixelated;
+}
+
+/* =========================================================
+   STATUS BAR COLORS
+   ========================================================= */
+
+.fill-profit {
+  background: var(--profit);
+}
+
+.fill-trust {
+  background: var(--trust);
+}
+
+.fill-stress {
+  background: var(--stress);
+}
+
+.fill-forest {
+  background: var(--forest);
+}
+
+
+/* =========================================================
+   CENTRAL FOREST MAP
+   ========================================================= */
+
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(var(--grid-columns), minmax(0, 1fr));
+
   align-self: stretch;
+
   width: 100%;
+
   min-height: clamp(280px, 52vh, 580px);
+
   overflow: hidden;
+
   border: 1px solid var(--border);
+
   border-radius: 12px;
+
   background: #122318;
-  box-shadow: inset 0 0 48px rgb(0 0 0 / 0.18);
+
+  box-shadow:
+    inset 0 0 48px rgb(0 0 0 / 0.18);
 }
+
 .game-grid-cell {
   aspect-ratio: 1;
-  border-right: 1px solid rgb(76 163 94 / 0.16);
-  border-bottom: 1px solid rgb(76 163 94 / 0.16);
-  background: linear-gradient(135deg, rgb(76 163 94 / 0.12), transparent 65%);
+
+  border-right:
+    1px solid rgb(76 163 94 / 0.16);
+
+  border-bottom:
+    1px solid rgb(76 163 94 / 0.16);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgb(76 163 94 / 0.12),
+      transparent 65%
+    );
 }
+
 .game-grid-cell:nth-child(4n + 2) {
   background-color: rgb(90 133 66 / 0.14);
 }
@@ -110,108 +272,178 @@ body {
 /* --- timer --- */
 .turn-timer {
   height: 6px;
+  max-width: 396px;
   background: var(--panel);
   border-radius: 4px;
   overflow: hidden;
   margin: 18px 0;
 }
+
 .turn-timer-fill {
   height: 100%;
+
   background: var(--forest);
-  transition: width 0.1s linear, background 0.3s ease;
+
+  transition:
+    width 0.1s linear,
+    background 0.3s ease;
 }
+
 .turn-timer-fill.urgent {
   background: var(--stress);
 }
-/* --- choice cards --- */
+
+
+/* =========================================================
+   CHOICE CARDS
+   ========================================================= */
+
 .choice-cards {
   display: flex;
   flex-direction: row;
+
   gap: 12px;
+
   margin-top: 20px;
 }
+
 .choice-card {
   flex: 1 1 0;
+
   text-align: left;
+
   background: var(--panel);
+
   border: 1px solid var(--border);
+
   border-radius: 8px;
+
   padding: 14px 16px;
+
   color: var(--text);
+
   cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.1s ease;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.1s ease;
+
   font-family: 'MyFont', sans-serif;
 }
+
 .choice-card:hover {
   border-color: var(--text);
+
   transform: translateY(-1px);
 }
+
 .choice-text {
   margin: 0 0 8px;
+
   font-size: 1rem;
 }
+
 .choice-effects {
   display: flex;
+
   gap: 12px;
+
   font-size: 0.8rem;
 }
+
 .choice-effects .pos {
   color: var(--forest);
 }
+
 .choice-effects .neg {
   color: var(--stress);
 }
-/* --- story / event / ending screens --- */
-.story-screen, .ending-screen {
+
+
+/* =========================================================
+   STORY / EVENT / ENDING SCREENS
+   ========================================================= */
+
+.story-screen,
+.ending-screen {
   text-align: center;
 }
+
 .event-screen {
   padding: 60px 12px;
+
   text-align: center;
 }
-.story-screen h1, .ending-screen h1 {
+
+.story-screen h1,
+.ending-screen h1 {
   margin-bottom: 16px;
 }
 .story-screen p, .event-screen p {
   color: var(--text);
   line-height: 1.5;
 }
-.story-screen button, .event-screen button, .ending-screen button {
+
+.story-screen button,
+.event-screen button,
+.ending-screen button {
   margin-top: 24px;
+
   background: var(--forest);
+
   color: #0e1410;
+
   border: none;
+
   padding: 10px 22px;
+
   border-radius: 6px;
+
   font-weight: 600;
+
   cursor: pointer;
+
   font-family: 'MyFont', sans-serif;
 }
+
 .ending-screen.reveal {
   padding: 90px;
   text-align: center;
 }
+
 .ending-screen .winner-line {
   font-size: 1.2rem;
 }
+
 .ending-screen .forest-remaining {
   font-size: 1.4rem;
+
   color: var(--stress);
   text-align: center;
 }
+
 .cost-list {
   color: var(--text);
   line-height: 1;
   text-align: center;
 }
+
 .footnote {
   font-size: 0.85rem;
   color: var(--text);
   text-align: center;
   border-top: 1px solid var(--border);
+
   padding-top: 16px;
+
   margin-top: 24px;
 }
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
 @media (max-width: 700px) {
   .app-shell {
     padding: 16px;
@@ -219,6 +451,7 @@ body {
 
   .game-layout {
     grid-template-columns: 1fr;
+
     min-height: 0;
   }
 
@@ -228,6 +461,11 @@ body {
 
   .choice-cards {
     flex-direction: column;
+  }
+
+  .pixel-bar {
+    width: 100%;
+    max-width: 512px;
   }
 }
 .scoreboard {
