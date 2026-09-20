@@ -1,4 +1,4 @@
-import { SmartSpectraSDK, breathingMetrics, cardioMetrics, decodeMetrics } from '@smartspectra/node-sdk';
+import { SmartSpectraSDK, cardioMetrics, decodeMetrics } from '@smartspectra/node-sdk';
 import { WebSocketServer } from 'ws';
 
 const PORT = 8765;
@@ -12,9 +12,10 @@ if (!apiKey) {
 const wss = new WebSocketServer({ port: PORT });
 console.log(`Bridge listening on ws://localhost:${PORT}`);
 
+// Pulse only: request just the cardio metric group.
 const sdk = new SmartSpectraSDK({
   apiKey,
-  requestedMetrics: [...breathingMetrics, ...cardioMetrics],
+  requestedMetrics: [...cardioMetrics],
 });
 
 function broadcast(data) {
@@ -24,42 +25,38 @@ function broadcast(data) {
   }
 }
 
-function latestValue(samples) {
-  const value = samples?.at(-1)?.value;
-  return Number.isFinite(value) ? value : null;
+let latestPulse = null;
+
+function pickReading(samples) {
+  if (!samples?.length) return null;
+  const valid = samples.filter((s) => Number.isFinite(s.value) && s.value > 0);
+  return (valid.findLast((s) => s.stable) ?? valid.at(-1))?.value ?? null;
 }
 
-function toGameStress(pulseRate, breathingRate) {
+function toGameStress(pulseRate) {
   // SmartSpectra provides vitals, not a clinical stress diagnosis. This is
-  // deliberately a game-only 0–100 tension signal derived from those vitals.
-  const pulseContribution = pulseRate == null ? 0 : (pulseRate - 70) * 1.2;
-  const breathingContribution = breathingRate == null ? 0 : (breathingRate - 14) * 2;
-  return Math.round(Math.max(0, Math.min(100, 35 + pulseContribution + breathingContribution)));
-
+  // deliberately a game-only 0–100 tension signal derived from pulse alone.
+  return Math.round(Math.max(0, Math.min(100, 35 + (pulseRate - 70) * 1.2)));
 }
-  
-
 
 sdk.on('metrics', (buf, timestampUs) => {
   const metrics = decodeMetrics(buf);
   if (Buffer.isBuffer(metrics)) return; // undecodable frame, skip
 
-  const breathingRate = latestValue(metrics.breathing?.rate);
-  const pulseRate = latestValue(metrics.cardio?.pulseRate);
+  const pulse = pickReading(metrics.cardio?.pulseRate);
+  if (pulse != null) latestPulse = pulse;
 
-  console.log('breathing:', breathingRate, ' pulse:', pulseRate);
+  console.log('Pulse:', latestPulse);
 
-  if (breathingRate == null && pulseRate == null) return;
+  // First pulse reading can take ~20s to appear; nothing to send until then.
+  if (latestPulse == null) return;
 
   broadcast({
-    stress: toGameStress(pulseRate, breathingRate),
-    breathingRate,
-    pulseRate,
+    stress: toGameStress(latestPulse),
+    pulseRate: latestPulse,
     timestampUs,
   });
 });
-
-
 
 sdk.on('validationStatus', (code, timestampUs, hint) => {
   if (code !== 0) console.warn('SmartSpectra input needs attention:', hint || `validation code ${code}`);
