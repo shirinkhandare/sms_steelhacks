@@ -1,6 +1,7 @@
 import forestBar from '../assets/Forest.png'
 import profitBar from '../assets/Profit.png'
 import stressBar from '../assets/Stress.png'
+import publicBar from '../assets/Public.png'
 
 function Bar({ label, value, max = 100, image, colorClass }) {
   const pct = Math.max(0, Math.min(100, (value / max) * 100))
@@ -39,7 +40,7 @@ export default function StatBars({ player, forestHealth, presageConnected }) {
       <Bar
         label="Public Trust"
         value={player.trust}
-        image={forestBar}
+        image={publicBar}
         colorClass="fill-trust"
       />
 
