@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from 'react'
 import { gameReducer, createInitialState } from './gameReducer.js'
 import { usePresageSocket } from './hooks/usePresageSocket.js'
+import { chooseBotCard, botThinkDelay } from './bots.js'
 import StatBars from './components/StatBars.jsx'
 import TurnTimer from './components/TurnTimer.jsx'
 import ChoiceCards from './components/ChoiceCards.jsx'
@@ -21,8 +22,34 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveStress, state.phase])
 
-  // ---- then the screens ----
+  // ---- bot turns ----
   const activePlayer = state.players[state.activePlayer]
+  const botTurn = activePlayer.isBot
+  const botCanMove =
+    botTurn && state.phase === 'playing' && state.actIntroSeen >= state.act
+
+  useEffect(() => {
+    if (!botCanMove) return
+    const id = setTimeout(() => {
+      const rivalKey = state.activePlayer === 'A' ? 'B' : 'A'
+      const choice = chooseBotCard(state.currentChoices, {
+        bot: state.players[state.activePlayer],
+        rival: state.players[rivalKey],
+        forestHealth: state.forestHealth,
+      })
+      if (choice) dispatch({ type: 'CHOOSE', choiceId: choice.id })
+    }, botThinkDelay())
+    return () => clearTimeout(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [botCanMove, state.turnNumber])
+
+  // ---- then the screens ----
+  // Always show the human's stats, even while the bot is moving.
+  const humanKey =
+    Object.keys(state.players).find((k) => !state.players[k].isBot) ??
+    state.activePlayer
+  const viewedPlayer = botTurn ? state.players[humanKey] : activePlayer
+  const lastMove = state.log[state.log.length - 1]
 
   if (state.phase === 'intro') {
     return (
@@ -78,16 +105,33 @@ export default function App() {
           </header>
 
           <StatBars
-            player={activePlayer}
+            player={viewedPlayer}
             forestHealth={state.forestHealth}
             presageConnected={presageConnected}
           />
 
-          <TurnTimer
-            timeLimitMs={state.timeLimitMs}
-            turnKey={state.turnNumber}
-            onTimeout={() => dispatch({ type: 'TIMEOUT' })}
-          />
+          {!botTurn && (
+            <TurnTimer
+              timeLimitMs={state.timeLimitMs}
+              turnKey={state.turnNumber}
+              onTimeout={() => dispatch({ type: 'TIMEOUT' })}
+            />
+          )}
+
+          <ul className="scoreboard">
+            {Object.entries(state.players).map(([key, p]) => (
+              <li key={key}>
+                <span>{p.name}</span>
+                <span>${p.profit}M</span>
+              </li>
+            ))}
+          </ul>
+
+          {lastMove && (
+            <p className="last-move">
+              {state.players[lastMove.player].name} chose: &ldquo;{lastMove.text}&rdquo;
+            </p>
+          )}
         </aside>
 
         <Grid
@@ -105,10 +149,16 @@ export default function App() {
           }))}
         />
       </div>
-      <ChoiceCards
-        choices={state.currentChoices}
-        onChoose={(choiceId) => dispatch({ type: 'CHOOSE', choiceId })}
-      />
+      {botTurn ? (
+        <div className="bot-turn" role="status" aria-live="polite">
+          {activePlayer.name} is deciding&hellip;
+        </div>
+      ) : (
+        <ChoiceCards
+          choices={state.currentChoices}
+          onChoose={(choiceId) => dispatch({ type: 'CHOOSE', choiceId })}
+        />
+      )}
     </div>
   )
 }

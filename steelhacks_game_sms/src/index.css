@@ -94,7 +94,7 @@ body {
 }
 
 .turn-indicator {
-  color: var(--muted);
+  color: var(--text);
   margin-top: 0;
 }
 
@@ -247,12 +247,29 @@ body {
 .game-grid-cell:nth-child(4n + 2) {
   background-color: rgb(90 133 66 / 0.14);
 }
-
-
-/* =========================================================
-   TIMER
-   ========================================================= */
-
+.stat-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.stat-bar-track {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  height: 10px;
+  overflow: hidden;
+}
+.stat-bar-fill {
+  height: 100%;
+  transition: width 0.4s ease;
+}
+.fill-profit { background: var(--profit); }
+.fill-trust { background: var(--trust); }
+.fill-stress { background: var(--stress); }
+.fill-forest { background: var(--forest); }
+/* --- timer --- */
 .turn-timer {
   height: 6px;
   max-width: 396px;
@@ -362,11 +379,8 @@ body {
 .ending-screen h1 {
   margin-bottom: 16px;
 }
-
-.story-screen p,
-.event-screen p {
-  color: var(--muted);
-
+.story-screen p, .event-screen p {
+  color: var(--text);
   line-height: 1.5;
 }
 
@@ -393,7 +407,8 @@ body {
 }
 
 .ending-screen.reveal {
-  text-align: left;
+  padding: 90px;
+  text-align: center;
 }
 
 .ending-screen .winner-line {
@@ -404,19 +419,19 @@ body {
   font-size: 1.4rem;
 
   color: var(--stress);
+  text-align: center;
 }
 
 .cost-list {
-  color: var(--muted);
-
-  line-height: 1.8;
+  color: var(--text);
+  line-height: 1;
+  text-align: center;
 }
 
 .footnote {
   font-size: 0.85rem;
-
-  color: var(--muted);
-
+  color: var(--text);
+  text-align: center;
   border-top: 1px solid var(--border);
 
   padding-top: 16px;
@@ -453,16 +468,46 @@ body {
     max-width: 512px;
   }
 }
-
-
-/* =========================================================
-   FONT
-   ========================================================= */
-
+.scoreboard {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+.scoreboard li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.scoreboard li + li {
+  margin-top: 4px;
+}
+.scoreboard li span:last-child {
+  color: var(--profit);
+}
+.last-move {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+.bot-turn {
+  margin-top: 20px;
+  padding: 26px 16px;
+  text-align: center;
+  background: var(--panel);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  animation: bot-pulse 1.4s ease-in-out infinite;
+}
 @font-face {
   font-family: 'MyFont';
-
-  src:
-    url('./assets/yoster.ttf')
-    format('truetype');
+  src: url('./assets/yoster.ttf') format('truetype');
+}
+@keyframes bot-pulse {
+  50% { opacity: 0.55; }
 }

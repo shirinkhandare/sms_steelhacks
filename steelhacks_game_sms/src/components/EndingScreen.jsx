@@ -35,15 +35,18 @@ export default function EndingScreen({ players, forestHealth, log, onRestart }) 
       <h1>The Real Number</h1>
       <p className="forest-remaining">Forest Health remaining: {Math.round(forestHealth)}%</p>
       <ul className="cost-list">
-        <li>Estimated hectares degraded: {hectaresLost.toLocaleString()}</li>
-        <li>Total turns played under real time pressure: {log.length}</li>
-        <li>Decisions made in a full panic (timed out): {timeoutCount}</li>
-        <li>Company A final trust: {Math.round(players.A.trust)} / 100</li>
-        <li>Company B final trust: {Math.round(players.B.trust)} / 100</li>
+        <p>Estimated hectares degraded: {hectaresLost.toLocaleString()}</p>
+        <p>Total turns played under real time pressure: {log.length}</p>
+        <p>Decisions made in a full panic (timed out): {timeoutCount}</p>
+        <p>Company A final trust: {Math.round(players.A.trust)} / 100</p>
+        <p>Company B final trust: {Math.round(players.B.trust)} / 100</p>
       </ul>
       <p className="footnote">
-        The Amazon has lost roughly 20% of its original forest cover since 1970 —
-        much of it to decisions that looked, in the moment, like this one.
+        The Amazon has lost roughly 20% of its original forest
+        <br></br>
+        cover since 1970 —much of it to decisions that looked,
+        <br></br>
+        in the moment, like this one.
       </p>
       <button onClick={onRestart}>Play again</button>
     </div>
