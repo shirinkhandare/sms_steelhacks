@@ -21,7 +21,7 @@ export function timeLimitForTurn(act, stress) {
 export const initialPlayer = (name, isBot = false) => ({
   name,
   isBot,
-  profit: 0,
+  profit: 50,
   trust: 50,
   stress: 20,
 })
@@ -104,6 +104,10 @@ function nextActivePlayer(p) {
   return p === 'A' ? 'B' : 'A'
 }
 
+function hasBankruptCompany(players) {
+  return Object.values(players).some((player) => player.profit < 0)
+}
+
 export function gameReducer(state, action) {
   switch (action.type) {
     case 'BEGIN':
@@ -149,7 +153,11 @@ export function gameReducer(state, action) {
       const nextPlayers = { ...state.players, [activeKey]: updatedPlayer }
 
       // end conditions
-      if (nextTurnNumber > MAX_TURNS || forestHealth <= 0) {
+      if (
+        nextTurnNumber > MAX_TURNS ||
+        forestHealth <= 0 ||
+        hasBankruptCompany(nextPlayers)
+      ) {
         return {
           ...state,
           players: nextPlayers,
@@ -173,12 +181,27 @@ export function gameReducer(state, action) {
       if (maybeEvent) {
         const { player: eventedPlayer, forestHealth: eventedForest } =
           applyEffects(nextActivePlayerState, forestHealth, maybeEvent.effects)
+        const eventPlayers = { ...nextPlayers, [nextActiveKey]: eventedPlayer }
+
+        if (eventedForest <= 0 || hasBankruptCompany(eventPlayers)) {
+          return {
+            ...state,
+            turnNumber: nextTurnNumber,
+            act: nextAct,
+            activePlayer: nextActiveKey,
+            players: eventPlayers,
+            forestHealth: eventedForest,
+            phase: 'ending',
+            log: [...state.log, logEntry],
+          }
+        }
+
         return {
           ...state,
           turnNumber: nextTurnNumber,
           act: nextAct,
           activePlayer: nextActiveKey,
-          players: { ...nextPlayers, [nextActiveKey]: eventedPlayer },
+          players: eventPlayers,
           forestHealth: eventedForest,
           timeLimitMs: timeLimitForTurn(nextAct, eventedPlayer.stress),
           phase: 'event',
