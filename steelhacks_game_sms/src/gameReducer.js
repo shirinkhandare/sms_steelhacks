@@ -5,7 +5,18 @@ import { eventsForAct } from './data/events.js'
 export const TURNS_PER_ACT = 6
 export const MAX_TURNS = TURNS_PER_ACT * 3
 export const BASE_TIME_MS = { 1: 14000, 2: 10000, 3: 7000 } // by act
+export const MIN_TURN_TIME_MS = 4000
+export const STRESS_TIME_PENALTY_MS = 40 // removed per stress point (0-100)
 export const RANDOM_EVENT_CHANCE = 0.3 // chance an event fires before a turn (act 2+)
+
+// SmartSpectra's pulse and breathing readings become the player's live stress
+// score. Use that score to set a turn's duration when the turn begins.
+export function timeLimitForTurn(act, stress) {
+  return Math.max(
+    MIN_TURN_TIME_MS,
+    BASE_TIME_MS[act] - clamp(stress) * STRESS_TIME_PENALTY_MS
+  )
+}
 
 export const initialPlayer = (name) => ({
   name,
@@ -26,7 +37,7 @@ export function createInitialState() {
       B: initialPlayer('Company B'),
     },
     forestHealth: 100,
-    timeLimitMs: BASE_TIME_MS[1],
+    timeLimitMs: timeLimitForTurn(1, initialPlayer('A').stress),
     currentChoices: drawChoices(1, initialPlayer('A').stress),
     lastEvent: null,
     log: [],
@@ -165,7 +176,7 @@ export function gameReducer(state, action) {
           activePlayer: nextActiveKey,
           players: { ...nextPlayers, [nextActiveKey]: eventedPlayer },
           forestHealth: eventedForest,
-          timeLimitMs: BASE_TIME_MS[nextAct],
+          timeLimitMs: timeLimitForTurn(nextAct, eventedPlayer.stress),
           phase: 'event',
           lastEvent: maybeEvent,
           log: [...state.log, logEntry],
@@ -179,7 +190,7 @@ export function gameReducer(state, action) {
         activePlayer: nextActiveKey,
         players: nextPlayers,
         forestHealth,
-        timeLimitMs: BASE_TIME_MS[nextAct],
+        timeLimitMs: timeLimitForTurn(nextAct, nextActivePlayerState.stress),
         currentChoices: drawChoices(nextAct, nextActivePlayerState.stress),
         phase: 'playing',
         log: [...state.log, logEntry],
