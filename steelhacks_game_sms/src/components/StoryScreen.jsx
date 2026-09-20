@@ -1,3 +1,5 @@
+import Box from './Box'
+
 const ACT_COPY = {
   1: {
     title: 'Act I — The Pitch',
@@ -17,9 +19,11 @@ export default function StoryScreen({ act, onBegin }) {
   const copy = ACT_COPY[act]
   return (
     <div className="story-screen">
-      <h1>{copy.title}</h1>
-      <p>{copy.body}</p>
-      <button onClick={onBegin}>Continue</button>
+      <Box>
+        <h1>{copy.title}</h1>
+        <p>{copy.body}</p>
+        <button onClick={onBegin}>Continue</button>
+      </Box>
     </div>
   )
 }
