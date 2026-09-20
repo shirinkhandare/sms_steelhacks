@@ -1,11 +1,44 @@
 // --- tunable constants ---
 export const BOT_THINK_MIN_MS = 1000
-export const BOT_THINK_MAX_MS = 7500
+export const BOT_THINK_MAX_MS = { 1: 15000, 2: 11000, 3: 9000 }
 const NOISE = 2
 const PANIC_CHANCE = { high: 0.35, mid: 0.1, calm: 0 }
 
-export function botThinkDelay() {
-  return BOT_THINK_MIN_MS + Math.random() * (BOT_THINK_MAX_MS - BOT_THINK_MIN_MS)
+export function botThinkDelay(act) {
+  const max = BOT_THINK_MAX_MS[act] ?? BOT_THINK_MAX_MS[1]
+  const delay = BOT_THINK_MIN_MS + Math.random() * Math.max(0, max - BOT_THINK_MIN_MS)
+  return delay
+}
+
+export function runBotTurn(bot, rival, forestHealth, choices, act) {
+  if (!choices.length) return () => {}
+
+  const maxMs = BOT_THINK_MAX_MS[act] ?? BOT_THINK_MAX_MS[1]
+  let done = false
+
+  const cancel = () => {
+    done = true
+    clearTimeout(thinkTimer)
+    clearTimeout(deadlineTimer)
+  }
+
+  const finish = (choice) => {
+    if (done) return
+    cancel()
+    applyChoice(bot, choice)
+  }
+
+  const thinkTimer = setTimeout(
+    () => finish(chooseBotCard(choices, { bot, rival, forestHealth })),
+    botThinkDelay(act)
+  )
+
+  // safety net: if the decision ever stalls, play a random card
+  const deadlineTimer = setTimeout(() => {
+    finish(choices[Math.floor(Math.random() * choices.length)])
+  }, maxMs)
+
+  return cancel
 }
 
 function stressBand(stress) {
