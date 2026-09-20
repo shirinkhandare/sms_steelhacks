@@ -53,7 +53,7 @@ body {
   letter-spacing: 0.5px;
 }
 .turn-indicator {
-  color: var(--muted);
+  color: var(--text);
   margin-top: 0;
 }
 /* --- stat bars --- */
@@ -89,7 +89,7 @@ body {
   display: flex;
   justify-content: space-between;
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--text);
   margin-bottom: 2px;
 }
 .stat-bar-track {
@@ -173,7 +173,7 @@ body {
   margin-bottom: 16px;
 }
 .story-screen p, .event-screen p {
-  color: var(--muted);
+  color: var(--text);
   line-height: 1.5;
 }
 .story-screen button, .event-screen button, .ending-screen button {
@@ -188,7 +188,8 @@ body {
   font-family: 'MyFont', sans-serif;
 }
 .ending-screen.reveal {
-  text-align: left;
+  padding: 90px;
+  text-align: center;
 }
 .ending-screen .winner-line {
   font-size: 1.2rem;
@@ -196,14 +197,17 @@ body {
 .ending-screen .forest-remaining {
   font-size: 1.4rem;
   color: var(--stress);
+  text-align: center;
 }
 .cost-list {
-  color: var(--muted);
-  line-height: 1.8;
+  color: var(--text);
+  line-height: 1;
+  text-align: center;
 }
 .footnote {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--text);
+  text-align: center;
   border-top: 1px solid var(--border);
   padding-top: 16px;
   margin-top: 24px;
@@ -226,7 +230,46 @@ body {
     flex-direction: column;
   }
 }
+.scoreboard {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+.scoreboard li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.scoreboard li + li {
+  margin-top: 4px;
+}
+.scoreboard li span:last-child {
+  color: var(--profit);
+}
+.last-move {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+.bot-turn {
+  margin-top: 20px;
+  padding: 26px 16px;
+  text-align: center;
+  background: var(--panel);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  animation: bot-pulse 1.4s ease-in-out infinite;
+}
 @font-face {
   font-family: 'MyFont';
   src: url('./assets/yoster.ttf') format('truetype');
+}
+@keyframes bot-pulse {
+  50% { opacity: 0.55; }
 }

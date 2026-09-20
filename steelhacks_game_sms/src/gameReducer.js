@@ -7,8 +7,9 @@ export const MAX_TURNS = TURNS_PER_ACT * 3
 export const BASE_TIME_MS = { 1: 14000, 2: 10000, 3: 7000 } // by act
 export const RANDOM_EVENT_CHANCE = 0.3 // chance an event fires before a turn (act 2+)
 
-export const initialPlayer = (name) => ({
+export const initialPlayer = (name, isBot = false) => ({
   name,
+  isBot,
   profit: 0,
   trust: 50,
   stress: 20,
@@ -23,7 +24,7 @@ export function createInitialState() {
     activePlayer: 'A',
     players: {
       A: initialPlayer('Company A'),
-      B: initialPlayer('Company B'),
+      B: initialPlayer('Company B', true),
     },
     forestHealth: 100,
     timeLimitMs: BASE_TIME_MS[1],
@@ -191,13 +192,21 @@ export function gameReducer(state, action) {
     // reflects the live stress level.
     case 'EXTERNAL_STRESS_UPDATE': {
       if (state.phase !== 'playing') return state
-      const activeKey = state.activePlayer
-      const player = state.players[activeKey]
-      const newStress = clamp(action.stress)
-      const updatedPlayer = { ...player, stress: newStress }
+      const humanKey = Object.keys(state.players).find(
+        (k) => !state.players[k].isBot
+      )
+      const targetKey = state.players[state.activePlayer].isBot
+        ? humanKey
+        : state.activePlayer
+      if(!targetKey){
+        return state;
+      }
+
+      const player = state.players[targetKey]
+      const updatedPlayer = { ...player, stress: clamp(action.stress) }
       return {
         ...state,
-        players: { ...state.players, [activeKey]: updatedPlayer },
+        players: { ...state.players, [targetKey]: updatedPlayer },
       }
     }
 
