@@ -40,14 +40,11 @@ export default function EndingScreen({ players, forestHealth, log, onRestart }) 
         <p>Decisions made in a full panic (timed out): {timeoutCount}</p>
         <p>Company A final trust: {Math.round(players.A.trust)} / 100</p>
         <p>Company B final trust: {Math.round(players.B.trust)} / 100</p>
-      </ul>
-      <p className="footnote">
-        The Amazon has lost roughly 20% of its original forest
         <br></br>
-        cover since 1970 —much of it to decisions that looked,
-        <br></br>
-        in the moment, like this one.
-      </p>
+        <p>The Amazon has lost roughly 20% of its original forest</p>
+        <p>cover since 1970 —much of it to decisions that looked,</p>
+        <p>in the moment, like this one.</p>
+        </ul>
       <button onClick={onRestart}>Play again</button>
     </div>
   )

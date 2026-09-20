@@ -265,8 +265,7 @@ body {
 /* =========================================================
    STORY / EVENT / ENDING SCREENS
    ========================================================= */
-.story-screen,
-.ending-screen {
+.story-screen, .ending-screen {
   text-align: center;
 }
 .event-screen {
@@ -281,9 +280,7 @@ body {
   color: var(--text);
   line-height: 1.5;
 }
-.story-screen button,
-.event-screen button,
-.ending-screen button {
+.story-screen button, .event-screen button, .ending-screen button {
   margin-top: 24px;
   background: var(--forest);
   color: #0e1410;
@@ -310,14 +307,6 @@ body {
   color: var(--text);
   line-height: 1;
   text-align: center;
-}
-.footnote {
-  font-size: 0.85rem;
-  color: var(--text);
-  text-align: center;
-  border-top: 1px solid var(--border);
-  padding-top: 16px;
-  margin-top: 24px;
 }
 /* =========================================================
    MOBILE
