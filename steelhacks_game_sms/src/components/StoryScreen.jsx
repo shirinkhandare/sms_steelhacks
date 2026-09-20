@@ -2,20 +2,20 @@ import Box from './Box'
 
 const ACT_COPY = {
   1: {
-    title: 'Act I — The Pitch',
-    body: 'Two companies enter the Amazon with the same promise: sustainable development, done right. Shareholders are patient. For now.',
+    title: 'Amazon Under Pressure',
+    body: 'Amazon Under Pressure is a single-player strategy game about running a company that enters the Amazon rainforest promising sustainable development, and watching that promise erode as your own real stress level starts making decisions for you.',
   },
   2: {
-    title: 'Directions',
-    body: 'The first earnings call is coming. The easy, gentle choices are starting to look expensive.',
+    title: 'How to Play',
+    body: "Each turn, click a choice to increase or decrease the forest cover, profit, stress, and, public trust.\nYour real stress level drives the game, read live through your webcam. Stay calm and your options stay balanced. Get stressed and your choices skew toward fast, greedy, high-damage decisions, with less time on the clock to decide.\nProfit is your score. Trust and Stress are yours alone. Forest Health is shared.\nBut, watch out if your profit hits 0 then you have lost.\nAt the end, you'll see your final Profit, make the most profit to beat the bot.",
   },
   3: {
-    title: 'Act III — The Reckoning',
-    body: "What's left of the forest is what's left to take. Everyone can see it now.",
+    title: 'The forest looks a little different',
+    body: 'But thats alright...',
   },
   4: {
-    title: 'Act IV — The Ledger',
-    body: 'The last quarter closes. Whatever is standing when the numbers are counted is all anyone will remember.',
+    title: 'Your stress is looking a little high...',
+    body: "Don't let Company B win.",
   },
 }
 
