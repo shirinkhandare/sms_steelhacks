@@ -26,22 +26,42 @@ export default function App() {
   const activePlayer = state.players[state.activePlayer]
   const botTurn = activePlayer.isBot
   const botCanMove =
-    botTurn && state.phase === 'playing' && state.actIntroSeen >= state.act
+    botTurn &&
+    state.phase === 'playing' &&
+    state.actIntroSeen >= state.act &&
+    state.currentChoices.length > 0
+
+  const choicesKey = state.currentChoices.map((c) => c.id).join(',')
 
   useEffect(() => {
     if (!botCanMove) return
+
     const id = setTimeout(() => {
       const rivalKey = state.activePlayer === 'A' ? 'B' : 'A'
-      const choice = chooseBotCard(state.currentChoices, {
-        bot: state.players[state.activePlayer],
-        rival: state.players[rivalKey],
-        forestHealth: state.forestHealth,
-      })
+      let choice = null
+      try {
+        choice = chooseBotCard(state.currentChoices, {
+          bot: state.players[state.activePlayer],
+          rival: state.players[rivalKey],
+          forestHealth: state.forestHealth,
+        })
+      } catch (err) {
+        console.error('bot decision failed', err)
+      }
+      // never leave the bot stuck: fall back to a random card
+      if (!choice && state.currentChoices.length) {
+        choice =
+          state.currentChoices[
+            Math.floor(Math.random() * state.currentChoices.length)
+          ]
+      }
       if (choice) dispatch({ type: 'CHOOSE', choiceId: choice.id })
-    }, botThinkDelay())
+      else console.warn('bot has no choices to pick from')
+    }, botThinkDelay(state.act))
+
     return () => clearTimeout(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [botCanMove, state.turnNumber])
+  }, [botCanMove, state.turnNumber, state.activePlayer, choicesKey, state.act])
 
   // ---- then the screens ----
   // Always show the human's stats, even while the bot is moving.
@@ -54,7 +74,7 @@ export default function App() {
   if (state.phase === 'intro') {
     return (
       <div className="app-shell title-screen-shell">
-        <StoryScreen act={1} onBegin={() => dispatch({ type: 'BEGIN' })} />
+        <StoryScreen act={state.storyPage} onBegin={() => dispatch({ type: 'BEGIN' })} />
       </div>
     )
   }
@@ -86,7 +106,7 @@ export default function App() {
   if (state.actIntroSeen < state.act) {
     return (
       <div className="app-shell">
-        <StoryScreen act={state.act} onBegin={() => dispatch({ type: 'BEGIN' })} />
+        <StoryScreen act={state.storyPage} onBegin={() => dispatch({ type: 'BEGIN' })} />
       </div>
     )
   }
@@ -161,5 +181,5 @@ export default function App() {
         />
       )}
     </div>
-  )
+    )
 }

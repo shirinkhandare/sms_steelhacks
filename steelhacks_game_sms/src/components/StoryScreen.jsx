@@ -13,10 +13,14 @@ const ACT_COPY = {
     title: 'Act III — The Reckoning',
     body: "What's left of the forest is what's left to take. Everyone can see it now.",
   },
+  4: {
+    title: 'Act IV — The Ledger',
+    body: 'The last quarter closes. Whatever is standing when the numbers are counted is all anyone will remember.',
+  },
 }
 
 export default function StoryScreen({ act, onBegin }) {
-  const copy = ACT_COPY[act]
+  const copy = ACT_COPY[act] ?? { title: `Act ${act}`, body: '' }
   return (
     <div className="story-screen">
       <Box>
