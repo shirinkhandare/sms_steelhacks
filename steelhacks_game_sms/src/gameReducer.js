@@ -18,7 +18,6 @@ export function timeLimitForTurn(act, stress) {
   )
 }
 
-
 export const initialPlayer = (name, isBot = false) => ({
   name,
   isBot,
@@ -30,9 +29,10 @@ export const initialPlayer = (name, isBot = false) => ({
 export function createInitialState() {
   return {
     phase: 'intro', // 'intro' | 'playing' | 'event' | 'ending'
+    act: 1,
     actIntroSeen: 0,
     turnNumber: 1,
-    act: 1,
+    storyPage: 1,
     activePlayer: 'A',
     players: {
       A: initialPlayer('Company A'),
@@ -107,6 +107,7 @@ function nextActivePlayer(p) {
 export function gameReducer(state, action) {
   switch (action.type) {
     case 'BEGIN':
+      if (state.storyPage === 1) return { ...state, storyPage: 2 }
       return { ...state, phase: 'playing', actIntroSeen: state.act }
 
     case 'ACKNOWLEDGE_EVENT': {
@@ -159,12 +160,13 @@ export function gameReducer(state, action) {
       }
 
       const nextAct = actForTurn(nextTurnNumber)
+      const actChanged = nextAct > state.act
       const nextActiveKey = nextActivePlayer(activeKey)
       const nextActivePlayerState = nextPlayers[nextActiveKey]
 
       // maybe trigger a random event for the upcoming player (acts 2+)
       const maybeEvent =
-        nextAct >= 2 && Math.random() < RANDOM_EVENT_CHANCE
+        !actChanged && nextAct >= 2 && Math.random() < RANDOM_EVENT_CHANCE
           ? pickRandomEvent(nextAct)
           : null
 
@@ -194,7 +196,8 @@ export function gameReducer(state, action) {
         forestHealth,
         timeLimitMs: timeLimitForTurn(nextAct, nextActivePlayerState.stress),
         currentChoices: drawChoices(nextAct, nextActivePlayerState.stress),
-        phase: 'playing',
+        phase: actChanged ? 'intro' : 'playing',
+        storyPage: actChanged ? nextAct + 1 : state.storyPage,
         log: [...state.log, logEntry],
       }
     }

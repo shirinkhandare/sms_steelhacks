@@ -1,6 +1,8 @@
+import { useEffect, useReducer, useRef } from 'react'
+
 // --- tunable constants ---
 export const BOT_THINK_MIN_MS = 1000
-export const BOT_THINK_MAX_MS = { 1: 15000, 2: 11000, 3: 9000 }
+export const BOT_THINK_MAX_MS = { 1: 5000, 2: 11000, 3: 9000 }
 const NOISE = 2
 const PANIC_CHANCE = { high: 0.35, mid: 0.1, calm: 0 }
 
