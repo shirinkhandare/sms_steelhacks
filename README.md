@@ -1,21 +1,16 @@
 # Team SMS SteelHacks Project
 <p>Description: </p>
+<p>Amazon Under Pressure is a single-player strategy game about running a company that enters the Amazon rainforest promising sustainable development, and watching that promise erode as your own real stress level starts making decisions for you.</p>
+
+<p>How to Play:</p>
+<p>Each turn, click a choice to increase or decrease the forest cover, profit, stress, and, public trust.
+  <br></br>
+Your real stress level drives the game, read live through your webcam. Stay calm and your options stay balanced. Get stressed and your choices skew toward fast, greedy, high-damage decisions, with less time on the clock to decide.
+  <br></br>
+Profit is your score. Trust and Stress are yours alone. Forest Health is shared.
+  <br></br>
+But, watch out if your profit hits 0 then you have lost.
+  <br></br>
+At the end, you'll see your final Profit, make the most profit to beat the bot.
+</p>
 <p>By: Mary Booth, Sophia Edington, Shirin Khandare</p>
-
-
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
