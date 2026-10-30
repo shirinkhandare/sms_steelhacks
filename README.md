@@ -8,7 +8,6 @@ Your real stress level drives the game, read live through your webcam. Stay calm
 Profit is your score. Trust and Stress are yours alone. Forest Health is shared.
 But, watch out if your profit hits 0 then you have lost.
 At the end, you'll see your final Profit, make the most profit to beat the bot.</p>
-<p>By: Mary Booth, Sophia Edington, Shirin Khandare</p>
 
 <p><b>How to Set up Persage:</b></p>
 <p><ol><li>Go to the Presage Developer Admin Portal</li>
@@ -18,3 +17,6 @@ At the end, you'll see your final Profit, make the most profit to beat the bot.<
 <ul><li>npm install @smartspectra/node-sdk ws</li>
 <li>set SMARTSPECTRA_API_KEY=your_key_here</li>
 <li>node bridge.mjs</li></ul></ol></p>
+
+<br>
+<p>By: Mary Booth, Sophia Edington, Shirin Khandare</p>
