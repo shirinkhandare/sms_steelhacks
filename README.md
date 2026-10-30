@@ -12,9 +12,9 @@ At the end, you'll see your final Profit, make the most profit to beat the bot.<
 
 <p><b>How to Set up Persage:</b></p>
 <p><ol><li>Go to the Presage Developer Admin Portal</li>
-  <li>Click Register and fill in your email, password, and required fields.</li>
-  <li>Once registered, log in and get your free API key or OAuth configuration.</li>
-  <li>Run these commands in your terminal</li>
-  <li>    npm install @smartspectra/node-sdk ws</li>
-  <li>    set SMARTSPECTRA_API_KEY=your_key_here</li>
-  <li>    node bridge.mjs</li></ol></p>
+<li>Click Register and fill in your email, password, and required fields.</li>
+<li>Once registered, log in and get your free API key or OAuth configuration.</li>
+<li>Run these commands in your terminal</li>
+<ul><li>npm install @smartspectra/node-sdk ws</li>
+<li>set SMARTSPECTRA_API_KEY=your_key_here</li>
+<li>node bridge.mjs</li></ul></ol></p>
